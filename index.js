@@ -1,3 +1,6 @@
+const fs = require("fs");
+const path = require("path");
+
 class WebStudioE2EReporter {
 
     constructor(options) {
@@ -11,46 +14,28 @@ class WebStudioE2EReporter {
 
     suiteStarted(result) {
         this.orders.push(result.id);
-        console.log(`================suiteStarted==============`);
-        console.log(`${result.id}`);
-        // console.log('Spec started: ' + result.description + ' whose full description is: ' + result.fullName);
     }
 
     suiteDone(result) {
         this.orders.push(result.id);
         this.results[result.id] = result;
-        console.log(`================suiteDone==============`);
-        console.log(`${result.id}`);
-        // console.log('Suite: ' + result.description + ' was ' + result.status);
-        // for(let i = 0; i < result.failedExpectations.length; i++) {
-        //     console.log('AfterAll ' + result.failedExpectations[i].message);
-        //     console.log(result.failedExpectations[i].stack);
-        // }
     }
 
     specStarted(result) {
         this.orders.push(result.id);
-        console.log(`================specStarted==============`);
-        console.log(`${result.id}`);
     }
 
     specDone(result) {
         this.orders.push(result.id);
         this.results[result.id] = result;
-        console.log(`================specDone==============`);
-        console.log(`${result.id}`);
-        // console.log('Spec: ' + result.description + ' was ' + result.status);
-        // for(let i = 0; i < result.failedExpectations.length; i++) {
-        //     console.log('Failure: ' + result.failedExpectations[i].message);
-        //     console.log(result.failedExpectations[i].stack);
-        // }
-        // console.log(result.passedExpectations.length);
     }
 
     jasmineDone() {
         this.treeNode = this.createTree(this.orders);
         this.fillResults(this.treeNode);
-        console.log(JSON.stringify(this.treeNode));
+
+        // console.log(JSON.stringify(this.treeNode));
+        this.writeToJSON(JSON.stringify(this.treeNode));
     }
 
     fillResults(tree) {
@@ -99,6 +84,14 @@ class WebStudioE2EReporter {
 
     isSuite(id) {
         return id.indexOf('suite') === 0;
+    }
+
+    writeToJSON(text) {
+        const filename = 'results.json';
+        const filePath = path.join(__dirname, filename);
+        const json = fs.openSync(filePath, "w");
+        fs.writeSync(json, text, 0);
+        fs.closeSync(json);
     }
 }
 
