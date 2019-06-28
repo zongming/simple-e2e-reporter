@@ -1,11 +1,8 @@
 const fs = require("fs");
 const path = require("path");
+const Report = require('./report');
 
 class WebStudioE2EReporter {
-
-    constructor(options) {
-
-    }
 
     jasmineStarted(suiteInfo) {
         this.results = {};
@@ -33,20 +30,24 @@ class WebStudioE2EReporter {
     jasmineDone() {
         this.treeNode = this.createTree(this.orders);
         this.fillResults(this.treeNode);
-
-        // console.log(JSON.stringify(this.treeNode));
         this.writeToJSON(JSON.stringify(this.treeNode));
+
+        new Report().generateReport(this.treeNode);
+    }
+
+    readFile(filename) {
+        return fs.readFileSync(filename, 'utf-8');
     }
 
     fillResults(tree) {
-        this.fillTreeNode(tree);
+        this.fillResult(tree);
 
         for (let i = 0; i < tree.children.length; i++) {
             this.fillResults(tree.children[i]);
         }
     }
 
-    fillTreeNode(node) {
+    fillResult(node) {
         const nodeID = node.id;
         const result = this.results[nodeID];
         if (result) {
@@ -87,7 +88,7 @@ class WebStudioE2EReporter {
     }
 
     writeToJSON(text) {
-        const filename = 'results.json';
+        const filename = 'report.json';
         const filePath = path.join(__dirname, filename);
         const json = fs.openSync(filePath, "w");
         fs.writeSync(json, text, 0);
