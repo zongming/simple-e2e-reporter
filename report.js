@@ -21,7 +21,7 @@ class Report {
         const report = this.indexTemplate({
             html: this.generateHtml(treeNode)
         });
-        this.writeToReport(report);
+        return report;
     }
 
     generateHtml(node) {
@@ -31,16 +31,9 @@ class Report {
         });
     }
 
-    writeToReport(text) {
-        const filename = 'report.html';
-        const filePath = path.join(__dirname, filename);
-        const html = fs.openSync(filePath, "w");
-        fs.writeSync(html, text, 0);
-        fs.closeSync(html);
-    }
 }
 
-// const suites = require('./results.json');
+// const suites = require('./report.json');
 // new Report().generateReport(suites);
 
 module.exports = Report;

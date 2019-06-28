@@ -2,7 +2,10 @@ const fs = require("fs");
 const path = require("path");
 const Report = require('./report');
 
-class WebStudioE2EReporter {
+class Reporter {
+    constructor(options) {
+        this.savePath = options.savePath;
+    }
 
     jasmineStarted(suiteInfo) {
         this.results = {};
@@ -32,7 +35,8 @@ class WebStudioE2EReporter {
         this.fillResults(this.treeNode);
         this.writeToJSON(JSON.stringify(this.treeNode));
 
-        new Report().generateReport(this.treeNode);
+        const report = new Report().generateReport(this.treeNode);
+        this.writeToReport(report);
     }
 
     readFile(filename) {
@@ -89,11 +93,19 @@ class WebStudioE2EReporter {
 
     writeToJSON(text) {
         const filename = 'report.json';
-        const filePath = path.join(__dirname, filename);
+        const filePath = path.join(this.savePath || __dirname, filename);
         const json = fs.openSync(filePath, "w");
         fs.writeSync(json, text, 0);
         fs.closeSync(json);
     }
+
+    writeToReport(text) {
+        const filename = 'report.html';
+        const filePath = path.join(this.savePath || __dirname, filename);
+        const html = fs.openSync(filePath, "w");
+        fs.writeSync(html, text, 0);
+        fs.closeSync(html);
+    }
 }
 
-module.exports = WebStudioE2EReporter;
+module.exports = Reporter;
