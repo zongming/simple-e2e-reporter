@@ -31,9 +31,17 @@ class Report {
         });
     }
 
+    // writeToReport(text) {
+    //     const filename = 'report.html';
+    //     const filePath = path.join(filename);
+    //     const html = fs.openSync(filePath, "w");
+    //     fs.writeSync(html, text, 0);
+    //     fs.closeSync(html);
+    // }
 }
 
 // const suites = require('./report.json');
-// new Report().generateReport(suites);
+// const report = new Report();
+// report.writeToReport(report.generateReport(suites));
 
 module.exports = Report;

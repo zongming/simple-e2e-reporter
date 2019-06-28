@@ -31,7 +31,30 @@
 
         <div id="<%= suite.id %>" class="panel-collapse collapse in">
             <div class="panel-body">
-                <%= children.join('') %>
+                <% if (suite.isSuite) { %>
+                    <%= children.join('') %>
+                <% } else if(suite.status === "failed") { %>
+                    <% _.each(suite.failedExpectations, function(err) { %>
+                        <div>
+                            <span class="label label-danger"><i class="glyphicon glyphicon-remove"></i></span>
+                            <span class="text-danger"><%= err.message %></span>
+                        </div>
+                        <% if (err.stack) { %>
+                        <div>
+                            Stack:
+                            <span class="text-danger"><%= err.stack %></span>
+                        </div>
+                        <% } %>
+                    <% }) %>
+
+                    <div>
+                        <span class="label label-primary"><i class="glyphicon glyphicon-camera"></i></span>
+                        Screenshot on failure:
+                        <a data-toggle="lightbox" data-title="<%= suite.description %>" style="display: block" href="./screenshots/<%= suite.id %>.png">
+                            <img style="width: 500px;" src="./screenshots/<%= suite.id %>.png">
+                        </a>
+                    </div>
+                <% } %>
             </div>
         </div>
     </div>

@@ -28,6 +28,21 @@ class Reporter {
     specDone(result) {
         this.orders.push(result.id);
         this.results[result.id] = result;
+
+        if (result.status === 'failed') {
+            browser.getCapabilities().then(() => {
+                console.log('Take screenshot for failed case: ' + result.id);
+
+                browser.takeScreenshot().then((png) => {
+                    const stream = fs.createWriteStream(path.resolve(this.savePath, 'screenshots', result.id + '.png'));
+                    stream.write(new Buffer(png, 'base64'));
+                    stream.end();
+                    console.log('Take screeshot success');
+                }, (err) => {
+                    console.log('Take screeshot failed: ' + err);
+                });
+            });
+        }
     }
 
     jasmineDone() {
