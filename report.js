@@ -17,8 +17,30 @@ class Report {
         return fs.readFileSync(filename, 'utf-8');
     }
 
-    generateReport(treeNode) {
+    generateReport(treeNode, config = {}) {
+        const {startTime, endTime, browserName, browserVersion} = config;
+        let duration;
+
+        if (startTime && endTime) {
+            const totalSeconds = Math.floor((endTime - startTime) / 1000);
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor(totalSeconds % 3600 / 60);
+
+            if (hours) {
+                duration += `${hours} hours`;
+            }
+            if (minutes) {
+                duration += `${minutes} minutes`;
+            }
+        }
+
         const report = this.indexTemplate({
+            passed: treeNode.passed,
+            failed: treeNode.failed,
+            skipped: treeNode.skipped,
+            duration,
+            browserName,
+            browserVersion,
             html: this.generateHtml(treeNode)
         });
         return report;

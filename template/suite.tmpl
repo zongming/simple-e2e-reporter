@@ -73,17 +73,5 @@
 <% } %>
 
 <% if (suite.id === 'root') { %>
-    <div class="navbar navbar-default navbar-static-top" role="navigation">
-        <div class="container">
-            <div class="navbar-header">
-                <div class="project-name visible-md visible-lg">E2E test report</div>
-                <div class="label-container">
-                    <span class="label label-success" title="TestCases">Passed: <%= suite.passed %></span>
-                    <span class="label label-danger" title="TestCases">Failed: <%= suite.failed %></span>
-                    <span class="label label-warning" title="TestCases">Skipped: <%= suite.skipped %></span>
-                </div>
-            </div>
-        </div>
-    </div>
     <%= children.join('') %>
 <% } %>

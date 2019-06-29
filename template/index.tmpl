@@ -33,12 +33,37 @@
             font-size: 20px;
             font-weight: bold;
         }
+
+        .info {
+            text-align: right;
+            padding-bottom: 10px;
+        }
     </style>
     <title>E2E test report</title>
 </head>
 <body>
 
-<%= html %>
+<div class="navbar navbar-default navbar-static-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <div class="project-name visible-md visible-lg">E2E test report</div>
+            <div class="label-container">
+                <span class="label label-success" title="TestCases">Passed: <%= passed %></span>
+                <span class="label label-warning" title="TestCases">Skipped: <%= skipped %></span>
+                <span class="label label-danger" title="TestCases">Failed: <%= failed %></span>
+                <% if (duration) { %>
+                <span class="label label-info">Time Elapsed: <%= duration %></span>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="info"><b>Browser:</b><%= browserName %><%= browserVersion %></div>
+    <div class="info"><b>Generated on:</b><%= new Date().toGMTString() %></div>
+    <%= html %>
+</div>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"

@@ -10,6 +10,7 @@ class Reporter {
     jasmineStarted(suiteInfo) {
         this.results = {};
         this.orders = [];
+        this.startTime = new Date();
     }
 
     suiteStarted(result) {
@@ -28,6 +29,7 @@ class Reporter {
     specDone(result) {
         this.orders.push(result.id);
         this.results[result.id] = result;
+        this.endTime = new Date();
 
         if (result.status === 'failed') {
             browser.getCapabilities().then(() => {
@@ -53,8 +55,19 @@ class Reporter {
 
         this.writeToJSON(JSON.stringify(this.treeNode));
 
-        const report = new Report().generateReport(this.treeNode);
-        this.writeToReport(report);
+        browser.getCapabilities().then(function (caps) {
+            browserName = caps.get('browserName');
+            browserVersion = caps.get('version');
+
+            const report = new Report().generateReport(this.treeNode, {
+                browserName,
+                browserVersion,
+                startTime: this.startTime,
+                endTime: this.endTime
+            });
+
+            this.writeToReport(report);
+        });
     }
 
     readFile(filename) {
@@ -85,7 +98,7 @@ class Reporter {
 
             if (!node.isSuite) {
                 let p = node.parent;
-                while(p && p.isSuite) {
+                while (p && p.isSuite) {
                     switch (result.status) {
                         case 'passed':
                             p.passed++;
