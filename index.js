@@ -48,6 +48,9 @@ class Reporter {
     jasmineDone() {
         this.treeNode = this.createTree(this.orders);
         this.fillResults(this.treeNode);
+
+        this.deleteParent(this.treeNode);
+
         this.writeToJSON(JSON.stringify(this.treeNode));
 
         const report = new Report().generateReport(this.treeNode);
@@ -66,34 +69,67 @@ class Reporter {
         }
     }
 
+    deleteParent(tree) {
+        delete tree.parent;
+
+        for (let i = 0; i < tree.children.length; i++) {
+            this.deleteParent(tree.children[i]);
+        }
+    }
+
     fillResult(node) {
         const nodeID = node.id;
         const result = this.results[nodeID];
         if (result) {
             node.result = result;
+
+            if (!node.isSuite) {
+                let p = node.parent;
+                while(p && p.isSuite) {
+                    switch (result.status) {
+                        case 'passed':
+                            p.passed++;
+                            break;
+                        case 'failed':
+                            p.failed++;
+                            break;
+                        case 'disabled':
+                            p.skipped++;
+                            break;
+                    }
+                    p = p.parent;
+                }
+            }
         }
-        delete node.parent;
     }
 
     createTree(orders) {
         const suites = {
             id: 'root',
             parent: undefined,
-            children: []
+            isSuite: true,
+            children: [],
+            passed: 0,
+            failed: 0,
+            skipped: 0
         };
         let pointer = suites;
 
         for (let i = 0; i < orders.length; i++) {
             const x = orders[i];
+            const parent = pointer.parent;
 
             if (x === pointer.id) {
-                pointer.parent.children.push(pointer);
-                pointer = pointer.parent;
+                parent.children.push(pointer);
+                pointer = parent;
             } else {
                 const node = {
                     id: x,
                     parent: pointer,
                     isSuite: this.isSuite(x),
+                    passed: 0,
+                    failed: 0,
+                    skipped: 0,
                     children: []
                 };
                 pointer = node;
