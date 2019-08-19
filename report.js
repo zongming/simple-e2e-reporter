@@ -19,7 +19,7 @@ class Report {
 
     generateReport(treeNode, config = {}) {
         const {startTime, endTime, browserName, browserVersion} = config;
-        let duration;
+        let duration = '';
 
         if (startTime && endTime) {
             const totalSeconds = Math.floor((endTime - startTime) / 1000);

@@ -5,6 +5,7 @@ const Report = require('./report');
 class Reporter {
     constructor(options) {
         this.savePath = options.savePath;
+        this.reportFileName = options.reportFileName;
     }
 
     jasmineStarted(suiteInfo) {
@@ -55,9 +56,9 @@ class Reporter {
 
         this.writeToJSON(JSON.stringify(this.treeNode));
 
-        browser.getCapabilities().then(function (caps) {
-            browserName = caps.get('browserName');
-            browserVersion = caps.get('version');
+        browser.getCapabilities().then((caps) => {
+            const browserName = caps.get('browserName');
+            const browserVersion = caps.get('version');
 
             const report = new Report().generateReport(this.treeNode, {
                 browserName,
@@ -164,7 +165,7 @@ class Reporter {
     }
 
     writeToReport(text) {
-        const filename = 'report.html';
+        const filename = this.reportFileName || 'report.html';
         const filePath = path.join(this.savePath || __dirname, filename);
         const html = fs.openSync(filePath, "w");
         fs.writeSync(html, text, 0);
