@@ -95,6 +95,13 @@ class Reporter {
         const nodeID = node.id;
         const result = this.results[nodeID];
         if (result) {
+            const failed = result['failedExpectations'];
+            if (failed && failed.length) {
+                failed.forEach(f => {
+                    f.actual = f.actual.toString();
+                })
+            }
+            
             node.result = result;
 
             if (!node.isSuite) {
