@@ -98,7 +98,7 @@ class Reporter {
             const failed = result['failedExpectations'];
             if (failed && failed.length) {
                 failed.forEach(f => {
-                    f.actual = f.actual.toString();
+                    f.actual = f.actual && f.actual.toString();
                 })
             }
             

@@ -61,7 +61,7 @@
 
 <div class="container">
     <div class="info"><b>Browser: </b><%= browserName %><%= browserVersion %></div>
-    <div class="info"><b>Generated on: </b><%= new Date().toGMTString() %></div>
+    <div class="info"><b>Generated on: </b><span id="report-time" data-time="<%= new Date().getTime() %>"></span></div>
     <%= html %>
 </div>
 
@@ -80,6 +80,13 @@
         $(document).on('click', '[data-toggle="lightbox"]', function(event) {
             event.preventDefault();
             $(this).ekkoLightbox();
+        });
+
+        $('#report-time').each(function() {
+            var time = $(this).data('time');
+            if (time) {
+                $(this).text(new Date(+time).toLocaleString());
+            }
         });
     });
 </script>
