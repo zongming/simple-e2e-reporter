@@ -22,7 +22,9 @@
     <span style="color: #5cb85c;border-radius: 5px; padding: 5px;">Passed: <%= passed %></span>
     <span style="color: #d9534f;border-radius: 5px; padding: 5px;">Failed: <%= failed %></span>
     <span style="color: #f0ad4e;border-radius: 5px; padding: 5px;" title=TestCases>Skipped: <%= skipped %></span>
+    <% if (duration) { %>
     <span style="color: #5bc0de;border-radius: 5px; padding: 5px;">Time Elapsed: <%= duration %></span>
+    <% } %>
 </div>
 </body>
 </html>
