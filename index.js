@@ -60,14 +60,25 @@ class Reporter {
             const browserName = caps.get('browserName');
             const browserVersion = caps.get('version');
 
-            const report = new Report().generateReport(this.treeNode, {
+            const r = new Report();
+            
+            const report = r.generateReport(this.treeNode, {
                 browserName,
                 browserVersion,
                 startTime: this.startTime,
                 endTime: this.endTime
             });
-
+            
             this.writeToReport(report);
+            
+            const email = r.generateHtmlEmail(this.treeNode, {
+                browserName,
+                browserVersion,
+                startTime: this.startTime,
+                endTime: this.endTime
+            });
+    
+            this.writeToHtmlEmail(email);
         });
     }
 
@@ -173,6 +184,14 @@ class Reporter {
 
     writeToReport(text) {
         const filename = this.reportFileName || 'report.html';
+        const filePath = path.join(this.savePath || __dirname, filename);
+        const html = fs.openSync(filePath, "w");
+        fs.writeSync(html, text, 0);
+        fs.closeSync(html);
+    }
+    
+    writeToHtmlEmail(text) {
+        const filename = 'email.html';
         const filePath = path.join(this.savePath || __dirname, filename);
         const html = fs.openSync(filePath, "w");
         fs.writeSync(html, text, 0);
