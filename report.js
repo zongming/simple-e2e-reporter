@@ -13,7 +13,7 @@ class Report {
         );
     
         this.emailTemplate = _.template(
-            this.readFile(path.resolve(__dirname, 'template', 'email.tmpl'))
+            this.readFile(path.resolve(__dirname, 'template', 'summary.tmpl'))
         );
     }
 
@@ -45,7 +45,7 @@ class Report {
         });
     }
     
-    generateHtmlEmail(treeNode, config = {}) {
+    generateSummary(treeNode, config = {}) {
         const {startTime, endTime, browserName, browserVersion} = config;
     
         const duration = this.getDuration(startTime, endTime);
@@ -78,7 +78,7 @@ class Report {
         return duration;
     }
 
-// writeToReport(text) {
+    // writeToReport(text) {
     //     const filename = 'report.html';
     //     const filePath = path.join(filename);
     //     const html = fs.openSync(filePath, "w");
@@ -86,8 +86,8 @@ class Report {
     //     fs.closeSync(html);
     // }
     //
-    // writeToHtmlEmail(text) {
-    //     const filename = 'email.html';
+    // writeToSummary(text) {
+    //     const filename = 'summary.html';
     //     const filePath = path.join(filename);
     //     const html = fs.openSync(filePath, "w");
     //     fs.writeSync(html, text, 0);
@@ -98,6 +98,6 @@ class Report {
 // const suites = require('./report.json');
 // const report = new Report();
 // report.writeToReport(report.generateReport(suites));
-// report.writeToHtmlEmail(report.generateHtmlEmail(suites));
+// report.writeToSummary(report.generateSummary(suites));
 
 module.exports = Report;

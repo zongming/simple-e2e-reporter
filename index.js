@@ -71,14 +71,14 @@ class Reporter {
             
             this.writeToReport(report);
             
-            const email = r.generateHtmlEmail(this.treeNode, {
+            const email = r.generateSummary(this.treeNode, {
                 browserName,
                 browserVersion,
                 startTime: this.startTime,
                 endTime: this.endTime
             });
     
-            this.writeToHtmlEmail(email);
+            this.writeToSummary(email);
         });
     }
 
@@ -190,8 +190,8 @@ class Reporter {
         fs.closeSync(html);
     }
     
-    writeToHtmlEmail(text) {
-        const filename = 'email.html';
+    writeToSummary(text) {
+        const filename = 'summary.html';
         const filePath = path.join(this.savePath || __dirname, filename);
         const html = fs.openSync(filePath, "w");
         fs.writeSync(html, text, 0);
