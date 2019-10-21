@@ -3,21 +3,35 @@
         <div class="panel-heading" style="position: relative;">
             <h4 class="panel-title">
                 <a data-toggle="collapse" href="#<%= suite.id %>">
-                    <% if (suite.status === "passed" || suite.status === "finished") { %>
-                    <span class="label label-success"><i class="glyphicon glyphicon-ok"></i></span>
-                    <span class="text-success">
-                    <% } else if (suite.status === "disabled" || suite.status === "pending") { %>
-                    <span class="label label-warning"><i class="glyphicon glyphicon-minus"></i></span>
-                    <span class="text-warning">
-                    <% } else if (suite.status === "failed") { %>
-                    <span class="label label-danger"><i class="glyphicon glyphicon-remove"></i></span>
-                    <span class="text-danger">
+                    <% if (suite.isSuite) { %>
+                        <% if (suite.passed) { %>
+                            <span class="label label-success"><i class="glyphicon glyphicon-ok"></i></span>
+                            <span class="text-success">
+                        <% } else if (suite.failed && !suite.passed) { %>
+                            <span class="label label-danger"><i class="glyphicon glyphicon-remove"></i></span>
+                            <span class="text-danger">
+                         <% } else { %>
+                            <span class="label label-warning"><i class="glyphicon glyphicon-minus"></i></span>
+                            <span class="text-warning">
+                         <% } %>
+                            <b><%= suite.isSuite ? 'TestSuite:' : 'TestCase:' %></b><%= suite.description %>
+                        </span>
                     <% } else { %>
-                    <span class="text-muted">
+                        <% if (suite.status === "passed" || suite.status === "finished") { %>
+                        <span class="label label-success"><i class="glyphicon glyphicon-ok"></i></span>
+                        <span class="text-success">
+                        <% } else if (suite.status === "disabled" || suite.status === "pending") { %>
+                        <span class="label label-warning"><i class="glyphicon glyphicon-minus"></i></span>
+                        <span class="text-warning">
+                        <% } else if (suite.status === "failed") { %>
+                        <span class="label label-danger"><i class="glyphicon glyphicon-remove"></i></span>
+                        <span class="text-danger">
+                        <% } else { %>
+                        <span class="text-muted">
+                        <% } %>
+                            <b><%= suite.isSuite ? 'TestSuite:' : 'TestCase:' %></b><%= suite.description %>
+                        </span>
                     <% } %>
-                        <b><%= suite.isSuite ? 'TestSuite:' : 'TestCase:' %></b><%= suite.description %>
-                    </span>
-
                     <% if (!suite.isSuite) { %>
                     <span class="label-container">
                         <% if (suite.status === "passed") { %><span class="label label-success" title="Passed">Passed</span><% } %>
