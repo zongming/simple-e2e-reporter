@@ -29,6 +29,28 @@
     </tr>
 </table>
 
+<% if(errorList && errorList.length) { %>
+<h2 style="margin-top: 40px;">Failed Test Cases</h2>
+
+<table width="800" cellspacing="0" cellpadding="4" border="1" align="left" style="table-layout: fixed;">
+    <tr bgcolor="#F3F3F3">
+        <td width="388"><b>Test Name</b></td>
+        <td width="200"><b>Error Details</b></td>
+    </tr>
+    <% _.each(errorList, function(err) { %>
+    <tr>
+        <td width="388" style="overflow: hidden; text-overflow: ellipsis">
+            <%= err.fullName %>
+        </td>
+        <td width="200" style="overflow: hidden; text-overflow: ellipsis">
+            <% if (err.message) { %>
+            <%= err.message %>
+            <% } %>
+        </td>
+    </tr>
+    <% }) %>
+</table>
+<% } %>
 <style>
     BODY, TD, TH, P {
         font-family: arial, sans-serif;

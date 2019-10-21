@@ -55,6 +55,7 @@ class Report {
             passed: treeNode.passed,
             failed: treeNode.failed,
             skipped: treeNode.skipped,
+            errorList: this.generateErrorList(treeNode),
             date,
             duration,
             browserName,
@@ -78,6 +79,23 @@ class Report {
             }
         }
         return duration;
+    }
+    
+    generateErrorList(tree) {
+        let list = [];
+        for (let i = 0; i < tree.children.length; i++) {
+            const c = tree.children[i];
+            if (c.isSuite) {
+                list = [...this.generateErrorList(c), ...list];
+            } else if(c.result.status === 'failed') {
+                const r = c.result;
+                list.push({
+                    fullName: c.result.fullName,
+                    message: r.failedExpectations && r.failedExpectations[0] && r.failedExpectations[0].message
+                });
+            }
+        }
+        return list;
     }
 
     writeToReport(text) {
