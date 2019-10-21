@@ -22,7 +22,7 @@ class Report {
     }
 
     generateReport(treeNode, config = {}) {
-        const {startTime, endTime, browserName, browserVersion} = config;
+        const {startTime, endTime, browserName, browserVersion, date} = config;
     
         const duration = this.getDuration(startTime, endTime);
         
@@ -30,6 +30,7 @@ class Report {
             passed: treeNode.passed,
             failed: treeNode.failed,
             skipped: treeNode.skipped,
+            date,
             duration,
             browserName,
             browserVersion,
@@ -46,7 +47,7 @@ class Report {
     }
     
     generateSummary(treeNode, config = {}) {
-        const {startTime, endTime, browserName, browserVersion} = config;
+        const {startTime, endTime, browserName, browserVersion, date} = config;
     
         const duration = this.getDuration(startTime, endTime);
     
@@ -54,6 +55,7 @@ class Report {
             passed: treeNode.passed,
             failed: treeNode.failed,
             skipped: treeNode.skipped,
+            date,
             duration,
             browserName,
             browserVersion,
@@ -78,26 +80,36 @@ class Report {
         return duration;
     }
 
-    // writeToReport(text) {
-    //     const filename = 'report.html';
-    //     const filePath = path.join(filename);
-    //     const html = fs.openSync(filePath, "w");
-    //     fs.writeSync(html, text, 0);
-    //     fs.closeSync(html);
-    // }
-    //
-    // writeToSummary(text) {
-    //     const filename = 'summary.html';
-    //     const filePath = path.join(filename);
-    //     const html = fs.openSync(filePath, "w");
-    //     fs.writeSync(html, text, 0);
-    //     fs.closeSync(html);
-    // }
+    writeToReport(text) {
+        const filename = 'report.html';
+        const filePath = path.join(filename);
+        const html = fs.openSync(filePath, "w");
+        fs.writeSync(html, text, 0);
+        fs.closeSync(html);
+    }
+
+    writeToSummary(text) {
+        const filename = 'summary.html';
+        const filePath = path.join(filename);
+        const html = fs.openSync(filePath, "w");
+        fs.writeSync(html, text, 0);
+        fs.closeSync(html);
+    }
 }
 
+// const startTime = new Date(1571628330949);
+// const endTime = new Date(1571629330949);
 // const suites = require('./report.json');
 // const report = new Report();
-// report.writeToReport(report.generateReport(suites));
-// report.writeToSummary(report.generateSummary(suites));
+// const config = {
+//     date: new Date(),
+//     duration: '1 hour 2 min',
+//     browserName: 'chrome',
+//     browserVersion: '75',
+//     startTime,
+//     endTime
+// };
+// report.writeToReport(report.generateReport(suites, config));
+// report.writeToSummary(report.generateSummary(suites, config));
 
 module.exports = Report;

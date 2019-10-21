@@ -1,8 +1,85 @@
-<div style="font-size: 20px; color: #FFF; font-weight: bold;margin: 0; padding: 0;">
-    <span style="color: #5cb85c;border-radius: 5px; padding: 5px;">Passed: <%= passed %></span>
-    <span style="color: #d9534f;border-radius: 5px; padding: 5px;">Failed: <%= failed %></span>
-    <span style="color: #f0ad4e;border-radius: 5px; padding: 5px;" title=TestCases>Skipped: <%= skipped %></span>
-    <% if (duration) { %>
-    <span style="color: #5bc0de;border-radius: 5px; padding: 5px;">Time Elapsed: <%= duration %></span>
-    <% } %>
-</div>
+    <tr>
+        <td><b>Date of job:</b></td>
+        <td><%= date.toLocaleString() %></td>
+    </tr>
+    <tr>
+        <td><b>Job duration:</b></td>
+        <td><%= duration %></td>
+    </tr>
+</table>
+
+<h2 style="margin-top: 40px;">Case Summary</h2>
+
+<table style="border-collapse:collapse;text-align:center;">
+    <tr>
+        <th style="font-weight:normal;padding:0 10px;"></th>
+        <th style="font-weight:normal;padding:0 10px;">Total</th>
+        <th style="font-weight:normal;padding:0 10px;">Failed</th>
+        <th style="font-weight:normal;padding:0 10px;">Passed</th>
+        <th style="font-weight:normal;padding:0 10px;">Skipped</th>
+        <th style="font-weight:normal;padding:0 10px;">Pass %</th>
+    </tr>
+    <tr style="font-weight:bold">
+        <th style="font-weight:normal">All tests</th>
+        <td style="border-right:1px solid #000;"><%= passed + failed + skipped %></td>
+        <td style="border-right:1px solid #000;color:#d9534f"><%= failed %></td>
+        <td style="border-right:1px solid #000;color:#5cb85c"><%= passed %></td>
+        <td style="border-right:1px solid #000;color:#f0ad4e"><%= skipped %></td>
+        <td><%= (passed / (passed + failed + skipped) * 100).toFixed(2) %></td>
+    </tr>
+</table>
+
+<style>
+    BODY, TD, TH, P {
+        font-family: arial, sans-serif;
+        font-size: 14px;
+        color: black;
+    }
+
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        font-size: 14px;
+    }
+
+    h1 {
+        color: black;
+    }
+
+    h2 {
+        color: black;
+    }
+
+    h3 {
+        color: black;
+    }
+
+    TD.bg1 {
+        color: white;
+        background-color: #0000C0;
+        font-size: 120%
+    }
+
+    TD.bg2 {
+        color: white;
+        background-color: #4040FF;
+        font-size: 110%
+    }
+
+    TD.bg3 {
+        color: white;
+        background-color: #8080FF;
+    }
+
+    TD.test_passed {
+        color: blue;
+    }
+
+    TD.test_failed {
+        color: red;
+    }
+
+    TD.console {
+        font-family: Courier New;
+    }
+</style>

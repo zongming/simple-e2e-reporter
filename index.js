@@ -61,10 +61,12 @@ class Reporter {
             const browserVersion = caps.get('version');
 
             const r = new Report();
+            const d = new Date();
             
             const report = r.generateReport(this.treeNode, {
                 browserName,
                 browserVersion,
+                date: d,
                 startTime: this.startTime,
                 endTime: this.endTime
             });
@@ -74,6 +76,7 @@ class Reporter {
             const email = r.generateSummary(this.treeNode, {
                 browserName,
                 browserVersion,
+                date: d,
                 startTime: this.startTime,
                 endTime: this.endTime
             });
