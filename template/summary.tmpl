@@ -44,7 +44,7 @@
         </td>
         <td width="200" style="overflow: hidden; text-overflow: ellipsis">
             <% if (err.message) { %>
-            <%= err.message %>
+            <%= err.message.substring(0, 200) %>
             <% } %>
         </td>
     </tr>
